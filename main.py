@@ -3,33 +3,39 @@ import simpy
 
 
 class CPU:
-    def __init__(self, env):
+    def __init__(self, env, base_time = 1, top_time = 3):
         self.env = env
         self.disk = Disk(env)
+        self.base_time = base_time
+        self.top_time = top_time
 
     def run(self):
         print('CPU running at %d' %env.now)
-        yield self.env.timeout(randint(1, 3))
+        yield self.env.timeout(randint(self.base_time, self.top_time))
         print('waiting the Disk at %d' %env.now)
         yield self.env.process(self.disk.get_resource())
 
 
 class Disk:
-    def __init__(self, env):
+    def __init__(self, env, base_time = 5, top_time = 10):
         self.env = env
+        self.base_time = base_time
+        self.top_time = top_time
 
     def get_resource(self):
-        yield self.env.timeout(randint(5, 10))
+        yield self.env.timeout(randint(self.base_time, self.top_time))
 
 
 class ClientWebBrowser:
-    def __init__(self, env):
+    def __init__(self, env, base_time = 20, top_time = 100):
         self.env = env
+        self.base_time = base_time
+        self.top_time = top_time
         self.cpu = CPU(env)
         self.action = env.process(self.working())
 
     def client_thinking(self):
-        yield self.env.timeout(randint(20, 100))
+        yield self.env.timeout(randint(self.base_time, self.top_time))
 
     def working(self):
         while True:
