@@ -1,3 +1,4 @@
+from random import random
 from random import randint
 import simpy
 
@@ -43,6 +44,10 @@ class ClientWebBrowser:
             print('Client acts at %d' %env.now)
             if env.now % 2 == 0:
                 yield self.env.process(self.cpu.run())
+
+
+def decision(prob):
+    return random() < prob
 
 
 env = simpy.Environment()
