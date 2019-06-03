@@ -22,8 +22,9 @@ class CPU:
 
     def run(self, client):
         yield self.env.process(self.process(client))
-        yield self.env.process(self.disk.get_resource(client))
-        yield self.env.process(self.process(client))
+        while decision(0.3):
+            yield self.env.process(self.disk.get_resource(client))
+            yield self.env.process(self.process(client))
 
 
 class Disk:
