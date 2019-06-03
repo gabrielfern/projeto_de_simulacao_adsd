@@ -8,12 +8,14 @@ DURATION = 100
 
 
 class CPU:
-    def __init__(self, env, id, next_server, busy_time=(1, 3)):
+    def __init__(self, env, id, next_server=None, busy_time=(1, 3), disk_prob=0.3, next_prob=0.14):
         self.env = env
         self.disk = Disk(env, id)
         self.id = id
         self.next_server = next_server
         self.busy_time = busy_time
+        self.disk_prob = disk_prob
+        self.next_prob = next_prob
         self.core = simpy.Resource(env, capacity=1)
 
     def process(self, client):
@@ -27,10 +29,10 @@ class CPU:
     def run(self, client):
         yield self.env.process(self.process(client))
         while 1:
-            if decision(0.3):
+            if decision(self.disk_prob):
                 yield self.env.process(self.disk.get_resource(client))
                 yield self.env.process(self.process(client))
-            elif self.next_server != None and decision(0.2):
+            elif self.next_server != None and decision(self.next_prob/(1-self.disk_prob)):
                 yield self.env.process(self.next_server.run(client))
                 yield self.env.process(self.process(client))
             else: break
@@ -53,11 +55,12 @@ class Disk:
 
 
 class ClientWebBrowser:
-    def __init__(self, env, server, id, busy_time=(20, 100)):
+    def __init__(self, env, server, id, busy_time=(20, 100), server_prob=0.5):
         self.env = env
         self.server = server
         self.id = id
         self.busy_time = busy_time
+        self.server_prob = server_prob
         self.action = env.process(self.working())
 
     def client_thinking(self):
@@ -67,7 +70,7 @@ class ClientWebBrowser:
         while True:
             yield self.env.process(self.client_thinking())
             print(self.id + ' acts at %d"' %env.now)
-            if decision(0.5):
+            if decision(self.server_prob):
                 yield self.env.process(self.server.run(self.id))
 
 
@@ -77,7 +80,7 @@ def decision(prob):
 
 env = simpy.Environment()
 
-database_server = CPU(env, 'Database Server', None)
+database_server = CPU(env, 'Database Server')
 application_server = CPU(env, 'Application Server', database_server)
 web_server = CPU(env, 'Web Server', application_server)
 
