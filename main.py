@@ -1,49 +1,60 @@
 from random import random
 from random import randint
+
 import simpy
+
+CLIENTS = 5
+DURATION = 100
 
 
 class CPU:
-    def __init__(self, env, base_time = 1, top_time = 3):
+    def __init__(self, env):
         self.env = env
         self.disk = Disk(env)
-        self.base_time = base_time
-        self.top_time = top_time
+        self.core = simpy.Resource(env, capacity=1)
 
-    def run(self):
-        print('CPU running at %d' %env.now)
-        yield self.env.timeout(randint(self.base_time, self.top_time))
-        print('waiting the Disk at %d' %env.now)
-        yield self.env.process(self.disk.get_resource())
+    def process(self, client):
+        with self.core.request() as req:
+            yield req
+            rand = randint(1, 3)
+            print('CPU running from %d" to %d" for %s' %(env.now, env.now + rand, client))
+            yield self.env.timeout(rand)
+
+    def run(self, client):
+        yield self.env.process(self.process(client))
+        yield self.env.process(self.disk.get_resource(client))
+        yield self.env.process(self.process(client))
 
 
 class Disk:
-    def __init__(self, env, base_time = 5, top_time = 10):
+    def __init__(self, env):
         self.env = env
-        self.base_time = base_time
-        self.top_time = top_time
+        self.controller = simpy.Resource(env, capacity=1)
 
-    def get_resource(self):
-        yield self.env.timeout(randint(self.base_time, self.top_time))
+    def get_resource(self, client):
+        with self.controller.request() as req:
+            yield req
+            rand = randint(5, 10)
+            print('Disk working from %d" to %d" for %s' %(env.now, env.now + rand, client))
+            yield self.env.timeout(rand)
 
 
 class ClientWebBrowser:
-    def __init__(self, env, base_time = 20, top_time = 100):
+    def __init__(self, env, server, id):
         self.env = env
-        self.base_time = base_time
-        self.top_time = top_time
-        self.cpu = CPU(env)
+        self.server = server
+        self.id = id
         self.action = env.process(self.working())
 
     def client_thinking(self):
-        yield self.env.timeout(randint(self.base_time, self.top_time))
+        yield self.env.timeout(randint(20, 100))
 
     def working(self):
         while True:
             yield self.env.process(self.client_thinking())
-            print('Client acts at %d' %env.now)
-            if env.now % 2 == 0:
-                yield self.env.process(self.cpu.run())
+            print(self.id + ' acts at %d"' %env.now)
+            if decision(0.5):
+                yield self.env.process(self.server.run(self.id))
 
 
 def decision(prob):
@@ -51,5 +62,7 @@ def decision(prob):
 
 
 env = simpy.Environment()
-ClientWebBrowser(env)
-env.run(until=300)
+server = CPU(env)
+for i in range(1, CLIENTS + 1):
+    ClientWebBrowser(env, server, "Client " + str(i))
+env.run(until=DURATION)
