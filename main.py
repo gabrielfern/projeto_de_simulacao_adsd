@@ -8,16 +8,18 @@ DURATION = 100
 
 
 class CPU:
-    def __init__(self, env):
+    def __init__(self, env, id):
         self.env = env
-        self.disk = Disk(env)
+        self.disk = Disk(env, id)
+        self.id = id
         self.core = simpy.Resource(env, capacity=1)
 
     def process(self, client):
         with self.core.request() as req:
             yield req
             rand = randint(1, 3)
-            print('CPU running from %d" to %d" for %s' %(env.now, env.now + rand, client))
+            print('%s - CPU running from %d" to %d" for %s' %(self.id,
+                env.now, env.now + rand, client))
             yield self.env.timeout(rand)
 
     def run(self, client):
@@ -28,15 +30,17 @@ class CPU:
 
 
 class Disk:
-    def __init__(self, env):
+    def __init__(self, env, id):
         self.env = env
+        self.id = id
         self.controller = simpy.Resource(env, capacity=1)
 
     def get_resource(self, client):
         with self.controller.request() as req:
             yield req
             rand = randint(5, 10)
-            print('Disk working from %d" to %d" for %s' %(env.now, env.now + rand, client))
+            print('%s - Disk working from %d" to %d" for %s' %(self.id,
+                env.now, env.now + rand, client))
             yield self.env.timeout(rand)
 
 
@@ -63,7 +67,12 @@ def decision(prob):
 
 
 env = simpy.Environment()
-server = CPU(env)
+
+database_server = CPU(env, 'Database Server')
+application_server = CPU(env, 'Application Server')
+web_server = CPU(env, 'Web Server')
+
 for i in range(1, CLIENTS + 1):
-    ClientWebBrowser(env, server, "Client " + str(i))
+    ClientWebBrowser(env, web_server, 'Client ' + str(i))
+
 env.run(until=DURATION)
