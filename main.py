@@ -8,10 +8,11 @@ DURATION = 100
 
 
 class CPU:
-    def __init__(self, env, id):
+    def __init__(self, env, id, next_server):
         self.env = env
         self.disk = Disk(env, id)
         self.id = id
+        self.next_server = next_server
         self.core = simpy.Resource(env, capacity=1)
 
     def process(self, client):
@@ -24,9 +25,14 @@ class CPU:
 
     def run(self, client):
         yield self.env.process(self.process(client))
-        while decision(0.3):
-            yield self.env.process(self.disk.get_resource(client))
-            yield self.env.process(self.process(client))
+        while 1:
+            if decision(0.3):
+                yield self.env.process(self.disk.get_resource(client))
+                yield self.env.process(self.process(client))
+            elif self.next_server != None and decision(0.2):
+                yield self.env.process(self.next_server.run(client))
+                yield self.env.process(self.process(client))
+            else: break
 
 
 class Disk:
@@ -68,9 +74,9 @@ def decision(prob):
 
 env = simpy.Environment()
 
-database_server = CPU(env, 'Database Server')
-application_server = CPU(env, 'Application Server')
-web_server = CPU(env, 'Web Server')
+database_server = CPU(env, 'Database Server', None)
+application_server = CPU(env, 'Application Server', database_server)
+web_server = CPU(env, 'Web Server', application_server)
 
 for i in range(1, CLIENTS + 1):
     ClientWebBrowser(env, web_server, 'Client ' + str(i))
