@@ -1,3 +1,4 @@
+![Diagram](https://raw.githubusercontent.com/gabrielfern/projeto_de_simulacao_adsd/master/diagram.png)
 ## Exemplo de saída do simulador
 
 > Detailed log written to "output.log"<br/>
