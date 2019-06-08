@@ -1,5 +1,8 @@
 from random import random
 from random import randint
+from statistics import mean
+from statistics import stdev
+import sys
 
 import simpy
 
@@ -17,14 +20,26 @@ class CPU:
         self.disk_prob = disk_prob
         self.next_prob = next_prob
         self.core = simpy.Resource(env, capacity=1)
+        self.usage_time = 0
+        self.response_time = []
+        self.wait_time = []
+        self.queue_size = []
 
     def process(self, client):
         with self.core.request() as req:
+            self.queue_size.append(len(self.core.queue))
+            arrival_time = self.env.now
             yield req
+            self.wait_time.append(env.now - arrival_time)
+
             rand = randint(self.busy_time[0], self.busy_time[1])
+            self.usage_time += rand
             print('%s - CPU running from %d" to %d" for %s' %(self.id,
                 env.now, env.now + rand, client))
+
             yield self.env.timeout(rand)
+            self.response_time.append(env.now - arrival_time)
+            
 
     def run(self, client):
         yield self.env.process(self.process(client))
@@ -87,4 +102,24 @@ web_server = CPU(env, 'Web Server', application_server)
 for i in range(1, CLIENTS + 1):
     ClientWebBrowser(env, web_server, 'Client ' + str(i))
 
+stdout = sys.stdout
+sys.stdout = open('log', 'w')
+
 env.run(until=DURATION)
+
+sys.stdout = stdout
+for server in (web_server, application_server, database_server):
+    print(server.id.ljust(25, '-'))
+    print('Utilization:', server.usage_time / DURATION)
+
+    m = '%11.6f' %mean(server.response_time) if len(server.response_time) > 0 else 'NaN'.rjust(11)
+    sd = '%11.6f' %stdev(server.response_time) if len(server.response_time) > 1 else 'NaN'.rjust(6)
+    print('Response Time mean: ' + m + '  std deviation: ' + sd)
+
+    m = '%15.6f' %mean(server.wait_time) if len(server.wait_time) > 0 else 'NaN'.rjust(15)
+    sd = '%11.6f' %stdev(server.wait_time) if len(server.wait_time) > 1 else 'NaN'.rjust(6)
+    print('Wait Time mean: ' + m + '  std deviation: ' + sd)
+
+    m = '%14.6f' %mean(server.queue_size) if len(server.queue_size) > 0 else 'NaN'.rjust(14)
+    sd = '%11.6f' %stdev(server.queue_size) if len(server.queue_size) > 1 else 'NaN'.rjust(6)
+    print('Queue Size mean: '+ m + '  std deviation: ' + sd)
