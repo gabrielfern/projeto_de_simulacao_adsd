@@ -33,7 +33,7 @@ class CPU:
             self.wait_time.append(env.now - arrival_time)
 
             rand = randint(self.busy_time[0], self.busy_time[1])
-            self.usage_time += rand
+            self.usage_time += min(rand, DURATION - 1 - env.now)
             print('%s - CPU running from %d" to %d" for %s' %(self.id,
                 env.now, env.now + rand, client))
 
@@ -59,11 +59,13 @@ class Disk:
         self.id = id
         self.busy_time = busy_time
         self.controller = simpy.Resource(env, capacity=1)
+        self.usage_time = 0
 
     def get_resource(self, client):
         with self.controller.request() as req:
             yield req
             rand = randint(self.busy_time[0], self.busy_time[1])
+            self.usage_time += min(rand, DURATION - 1 - env.now)
             print('%s - Disk working from %d" to %d" for %s' %(self.id,
                 env.now, env.now + rand, client))
             yield self.env.timeout(rand)
@@ -108,8 +110,12 @@ sys.stdout = open('log', 'w')
 env.run(until=DURATION)
 
 sys.stdout = stdout
+print('Log written to "log" file')
+print('Clients in the simulation:', CLIENTS)
+print('Simulation time:', DURATION)
+print()
 for server in (web_server, application_server, database_server):
-    print(server.id.ljust(25, '-'))
+    print((server.id + ' CPU').ljust(59, '-'))
     print('Utilization:', server.usage_time / DURATION)
 
     m = '%11.6f' %mean(server.response_time) if len(server.response_time) > 0 else 'NaN'.rjust(11)
@@ -123,3 +129,6 @@ for server in (web_server, application_server, database_server):
     m = '%14.6f' %mean(server.queue_size) if len(server.queue_size) > 0 else 'NaN'.rjust(14)
     sd = '%11.6f' %stdev(server.queue_size) if len(server.queue_size) > 1 else 'NaN'.rjust(6)
     print('Queue Size mean: '+ m + '  std deviation: ' + sd)
+
+    print((server.id + ' Disk').ljust(59, '-'))
+    print('Utilization:', server.disk.usage_time / DURATION)
