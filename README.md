@@ -6,32 +6,37 @@
 > Simulation time: 100<br/>
 > 
 > Web Server CPU---------------------------------------------<br/>
-> Utilization: 0.16<br/>
-> Response Time mean:    2.000000  std deviation:    0.755929<br/>
-> Wait Time mean:        0.111111  std deviation:    0.333333<br/>
-> Queue Size mean:       0.111111  std deviation:    0.333333<br/>
-> Web Server Disk--------------------------------------------<br/>
-> Utilization: 0.08<br/>
-> Response Time mean:    8.000000  std deviation:    NaN<br/>
-> Wait Time mean:        0.000000  std deviation:    NaN<br/>
-> Queue Size mean:       0.000000  std deviation:    NaN<br/>
-> Application Server CPU-------------------------------------<br/>
 > Utilization: 0.2<br/>
-> Response Time mean:    2.625000  std deviation:    0.744024<br/>
-> Wait Time mean:        0.125000  std deviation:    0.353553<br/>
-> Queue Size mean:       0.125000  std deviation:    0.353553<br/>
-> Application Server Disk------------------------------------<br/>
-> Utilization: 0.06<br/>
-> Response Time mean:    6.000000  std deviation:    NaN<br/>
-> Wait Time mean:        0.000000  std deviation:    NaN<br/>
-> Queue Size mean:       0.000000  std deviation:    NaN<br/>
-> Database Server CPU----------------------------------------<br/>
-> Utilization: 0.06<br/>
-> Response Time mean:    1.500000  std deviation:    1.000000<br/>
+> Response Time mean:    1.727273  std deviation:    0.904534<br/>
 > Wait Time mean:        0.000000  std deviation:    0.000000<br/>
 > Queue Size mean:       0.000000  std deviation:    0.000000<br/>
-> Database Server Disk---------------------------------------<br/>
+> Web Server Disk--------------------------------------------<br/>
+> Utilization: 0.43<br/>
+> Response Time mean:   10.166667  std deviation:    2.994439<br/>
+> Wait Time mean:        3.000000  std deviation:    2.886751<br/>
+> Queue Size mean:       0.571429  std deviation:    0.534522<br/>
+> Application Server CPU-------------------------------------<br/>
+> Utilization: 0.08<br/>
+> Response Time mean:    2.666667  std deviation:    0.577350<br/>
+> Wait Time mean:        0.000000  std deviation:    0.000000<br/>
+> Queue Size mean:       0.000000  std deviation:    0.000000<br/>
+> Application Server Disk------------------------------------<br/>
 > Utilization: 0.09<br/>
 > Response Time mean:    9.000000  std deviation:    NaN<br/>
 > Wait Time mean:        0.000000  std deviation:    NaN<br/>
 > Queue Size mean:       0.000000  std deviation:    NaN<br/>
+> Database Server CPU----------------------------------------<br/>
+> Utilization: 0.02<br/>
+> Response Time mean:    2.000000  std deviation:    NaN<br/>
+> Wait Time mean:        0.000000  std deviation:    NaN<br/>
+> Queue Size mean:       0.000000  std deviation:    NaN<br/>
+> Database Server Disk---------------------------------------<br/>
+> Utilization: 0.0<br/>
+> Response Time mean:         NaN  std deviation:    NaN<br/>
+> Wait Time mean:             NaN  std deviation:    NaN<br/>
+> Queue Size mean:            NaN  std deviation:    NaN<br/>
+> Client Web Browsers----------------------------------------<br/>
+> Utilization mean:      0.048000  std deviation:    0.025884<br/>
+> Response Time mean:    2.272727  std deviation:    0.786245<br/>
+> Wait Time mean:        0.090909  std deviation:    0.301511<br/>
+> Queue Size mean:       0.090909  std deviation:    0.301511<br/>

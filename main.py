@@ -7,7 +7,7 @@ import sys
 import simpy
 
 CLIENTS = 5
-DURATION = 500
+DURATION = 100
 
 
 class CPU:

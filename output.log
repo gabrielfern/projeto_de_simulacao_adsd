@@ -1,29 +1,43 @@
-Client 3 acts at 30"
-Web Server - CPU running from 30" to 33" for Client 3
-Client 2 acts at 33"
-Application Server - CPU running from 33" to 36" for Client 3
-Database Server - CPU running from 36" to 37" for Client 3
-Application Server - CPU running from 37" to 40" for Client 3
-Client 4 acts at 38"
-Web Server - CPU running from 38" to 39" for Client 4
-Application Server - CPU running from 40" to 42" for Client 4
-Application Server - Disk working from 40" to 46" for Client 3
-Client 1 acts at 41"
-Web Server - CPU running from 41" to 43" for Client 1
-Web Server - CPU running from 43" to 44" for Client 4
-Web Server - Disk working from 44" to 52" for Client 4
-Application Server - CPU running from 46" to 48" for Client 3
-Web Server - CPU running from 48" to 51" for Client 3
-Application Server - CPU running from 51" to 52" for Client 3
-Web Server - CPU running from 52" to 54" for Client 4
-Database Server - CPU running from 52" to 53" for Client 3
-Application Server - CPU running from 53" to 56" for Client 3
-Web Server - CPU running from 56" to 58" for Client 3
-Application Server - CPU running from 58" to 61" for Client 3
-Database Server - CPU running from 61" to 62" for Client 3
-Database Server - Disk working from 62" to 71" for Client 3
-Database Server - CPU running from 71" to 74" for Client 3
-Application Server - CPU running from 74" to 77" for Client 3
-Web Server - CPU running from 77" to 78" for Client 3
-Client 5 acts at 98"
-Web Server - CPU running from 98" to 100" for Client 5
+Client 2 acts at 10"
+Client 2 Web Browser running from 10" to 11"
+Web Server - CPU running from 11" to 14" for Client 2
+Web Server - Disk working from 14" to 19" for Client 2
+Web Server - CPU running from 19" to 22" for Client 2
+Web Server - Disk working from 22" to 31" for Client 2
+Client 5 acts at 23"
+Client 5 Web Browser running from 23" to 26"
+Web Server - CPU running from 26" to 27" for Client 5
+Web Server - Disk working from 31" to 37" for Client 5
+Web Server - CPU running from 31" to 32" for Client 2
+Web Server - Disk working from 37" to 45" for Client 2
+Web Server - CPU running from 37" to 39" for Client 5
+Client 2 acts at 38"
+Client 2 Web Browser running from 38" to 40"
+Web Server - CPU running from 40" to 41" for Client 2
+Application Server - CPU running from 41" to 44" for Client 2
+Database Server - CPU running from 44" to 46" for Client 2
+Web Server - Disk working from 45" to 52" for Client 5
+Web Server - CPU running from 45" to 46" for Client 2
+Application Server - CPU running from 46" to 49" for Client 2
+Client 3 acts at 48"
+Client 3 Web Browser running from 48" to 51"
+Application Server - Disk working from 49" to 58" for Client 2
+Client 4 acts at 51"
+Client 4 Web Browser running from 51" to 53"
+Web Server - Disk working from 52" to 57" for Client 2
+Web Server - CPU running from 52" to 55" for Client 5
+Client 5 Web Browser running from 55" to 57"
+Web Server - CPU running from 57" to 59" for Client 2
+Application Server - CPU running from 58" to 60" for Client 2
+Client 2 Web Browser running from 59" to 62"
+Web Server - CPU running from 60" to 61" for Client 2
+Client 2 Web Browser running from 62" to 64"
+Client 3 acts at 79"
+Client 3 Web Browser running from 79" to 80"
+Client 5 acts at 93"
+Client 5 Web Browser running from 93" to 95"
+Client 1 acts at 95"
+Client 1 Web Browser running from 95" to 98"
+Web Server - CPU running from 95" to 96" for Client 5
+Web Server - Disk working from 96" to 102" for Client 5
+Web Server - CPU running from 98" to 100" for Client 1
