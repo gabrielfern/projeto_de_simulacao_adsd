@@ -39,7 +39,7 @@ class CPU:
 
             yield self.env.timeout(rand)
             self.response_time.append(env.now - arrival_time)
-            
+
 
     def run(self, client):
         yield self.env.process(self.process(client))
@@ -167,7 +167,7 @@ for server in (web_server, application_server, database_server):
 
     m = '%14.6f' %mean(server.queue_size) if len(server.queue_size) > 0 else 'NaN'.rjust(14)
     sd = '%11.6f' %stdev(server.queue_size) if len(server.queue_size) > 1 else 'NaN'.rjust(6)
-    print('Queue Size mean: '+ m + '  std deviation: ' + sd)
+    print('Queue Size mean: ' + m + '  std deviation: ' + sd)
 
     print((server.id + ' Disk').ljust(59, '-'))
     print('Utilization:', server.disk.usage_time / DURATION)
@@ -182,7 +182,7 @@ for server in (web_server, application_server, database_server):
 
     m = '%14.6f' %mean(server.disk.queue_size) if len(server.disk.queue_size) > 0 else 'NaN'.rjust(14)
     sd = '%11.6f' %stdev(server.disk.queue_size) if len(server.disk.queue_size) > 1 else 'NaN'.rjust(6)
-    print('Queue Size mean: '+ m + '  std deviation: ' + sd)
+    print('Queue Size mean: ' + m + '  std deviation: ' + sd)
 
 
 print(('Client Web Browsers').ljust(59, '-'))
@@ -204,4 +204,4 @@ print('Wait Time mean: ' + m + '  std deviation: ' + sd)
 queue_size = [item for sublist in ClientWebBrowser.queue_size for item in sublist]
 m = '%14.6f' %mean(queue_size) if len(queue_size) > 0 else 'NaN'.rjust(14)
 sd = '%11.6f' %stdev(queue_size) if len(queue_size) > 1 else 'NaN'.rjust(6)
-print('Queue Size mean: '+ m + '  std deviation: ' + sd)
+print('Queue Size mean: ' + m + '  std deviation: ' + sd)
